@@ -122,6 +122,7 @@ const SelectLabel = (props: BoxProps) => (
     overflow="hidden"
     textOverflow="ellipsis"
     whiteSpace="nowrap"
+    pointerEvents="none"
   />
 )
 
