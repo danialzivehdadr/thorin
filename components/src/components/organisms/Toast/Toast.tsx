@@ -16,6 +16,7 @@ import { Box } from '../../atoms/Box/Box'
 import type { Space } from '@/src/tokens'
 import * as styles from './styles.css'
 import { clsx } from 'clsx'
+import { space } from '@/src/tokens/space'
 
 const CloseIcon = (props: BoxProps) => (
   <Box
@@ -27,7 +28,7 @@ const CloseIcon = (props: BoxProps) => (
     position="absolute"
     right="2.5"
     top="2.5"
-    color={{ base: 'textAccent' }}
+    color={{ base: 'greyPrimary' }}
     transitionDuration={150}
     transitionProperty="all"
     transitionTimingFunction="inOut"
@@ -52,7 +53,7 @@ const Container = React.forwardRef<HTMLElement, BoxProps & ContainerProps>(
   ) => (
     <Box
       {...props}
-      className={clsx(styles.container, className)}
+      className={clsx(styles.container, className, $mobile && 'touch')}
       style={{
         ...style,
         ...assignInlineVars({
@@ -197,41 +198,45 @@ export const TouchToast = ({
   }, [open])
 
   React.useEffect(() => {
-    // const originalTop = 0.025 * window.innerHeight
+    const originalTop = 0.025 * window.innerHeight
     if (touches.length && !popped) {
-      // let didEnd = false
+      let didEnd = false
       let lastTouch = touches[touches.length - 1]
       if (lastTouch === undefined) {
         lastTouch = touches[touches.length - 2] || 0
-        // didEnd = true
+        didEnd = true
       }
 
-      // const fontSize = parseInt(
-      //   getComputedStyle(document.documentElement).fontSize,
-      // )
-      // const difference = ((touches[0] as number) - lastTouch) as number
+      const fontSize = parseInt(
+        getComputedStyle(document.documentElement).fontSize,
+      )
+      const difference = ((touches[0] as number) - lastTouch) as number
 
-      // if (didEnd) {
-      //   if (
-      //     parseFloat(space['8']) * fontSize >
-      //     (ref.current?.offsetHeight || 0) - difference
-      //   ) {
-      //     onClose()
-      //   } else {
-      //     setCalcTop(originalTop)
-      //     setTouches([])
-      //   }
-      // } else {
-      //   if (difference * -1 > parseFloat(space['32']) * fontSize) {
-      //     setCalcTop(originalTop * 2)
-      //     setPopped(true)
-      //   } else if (difference > 0) {
-      //     setCalcTop(originalTop - difference)
-      //   } else {
-      //     const parabolised = 0.25 * (difference ^ 2)
-      //     setCalcTop(originalTop - parabolised)
-      //   }
-      // }
+      if (didEnd) {
+        if (
+          parseFloat(space['8']) * fontSize
+          > (ref.current?.offsetHeight || 0) - difference
+        ) {
+          onClose()
+        }
+        else {
+          setCalcTop(originalTop)
+          setTouches([])
+        }
+      }
+      else {
+        if (difference * -1 > parseFloat(space['32']) * fontSize) {
+          setCalcTop(originalTop * 2)
+          setPopped(true)
+        }
+        else if (difference > 0) {
+          setCalcTop(originalTop - difference)
+        }
+        else {
+          const parabolised = 0.25 * (difference ^ 2)
+          setCalcTop(originalTop - parabolised)
+        }
+      }
     }
   }, [touches])
 
@@ -318,7 +323,7 @@ export const TouchToast = ({
 export const Toast: React.FC<ToastProps> = ({
   onClose,
   open,
-  msToShow = 8000,
+  msToShow = 8000000,
   variant = 'desktop',
   ...props
 }) => {
