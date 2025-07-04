@@ -8,7 +8,6 @@ A design system for ENS built with React and vanilla-extract.
 
 ## Install
 
-
 ```bash
 pnpm i react react-dom @ensdomains/thorin@next
 ```
