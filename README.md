@@ -10,7 +10,7 @@ A design system for ENS built with React and vanilla-extract.
 
 
 ```bash
-pnpm i react react-dom @ensdomains/thorin
+pnpm i react react-dom @ensdomains/thorin@next
 ```
 
 ## Documentation
